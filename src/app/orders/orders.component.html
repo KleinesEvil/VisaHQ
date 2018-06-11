@@ -1,0 +1,41 @@
+<span *ngIf="errorMsg; then errorTmp; else normalTmp">
+	
+</span>
+<ng-template #errorTmp>
+	<img src="http://townofulsterlibrary.org/files/2016/01/oops.png" alt="it goes wrong too xD">
+	<h2>Houston... We have a problem</h2>
+	<p>Looks like we've got some server troubles here...</p>
+	<p>It seems to be {{errorMsg}}</p>
+	<button mat-raised-button color="warn">Start to panic</button>
+</ng-template>
+
+<ng-template #normalTmp>
+	<span *ngFor="let order of orders">
+		<span *ngFor="let agent of agents">
+			<span *ngFor="let item of order.items">
+				<span *ngIf="item.agent_id === agent.id">
+					<mat-accordion>
+					  <mat-expansion-panel (opened)="panelOpenState = true"
+					                       (closed)="panelOpenState = false">
+					    <mat-expansion-panel-header>
+					      <mat-panel-title>
+					        Your order № {{order.id}}
+					      </mat-panel-title>
+					      <mat-panel-description *ngIf="!panelOpenState">
+					        Click for more details
+					      </mat-panel-description>
+					    </mat-expansion-panel-header>
+					    <mat-list>
+						  <mat-list-item><b>Full name: </b> {{item.profile_fields.first_name + " " + item.profile_fields.last_name}}</mat-list-item>
+						  <mat-divider></mat-divider>
+						  <mat-list-item><b>Assigned agent: </b> {{agent.first_name + " " + agent.last_name}}</mat-list-item>
+						  <mat-divider></mat-divider>
+						  <mat-list-item><b>Total: </b> {{order.total | currency: item.currency.code}}</mat-list-item>
+						</mat-list>
+					  </mat-expansion-panel>
+					</mat-accordion>
+				</span>
+			</span>
+		</span>
+	</span>
+</ng-template>
